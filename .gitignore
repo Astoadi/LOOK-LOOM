@@ -1,0 +1,7 @@
+/BACKEND_SERVER/node_modules
+
+/BACKEND_SERVER/.env
+
+/CLIENT/node_modules
+
+/CLIENT/.env
