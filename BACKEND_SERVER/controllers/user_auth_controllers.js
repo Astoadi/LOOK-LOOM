@@ -56,7 +56,7 @@ export const login=async(req,res)=>{
     const if_user_name_exists_query_vlaue=[user_name];
     const response=await pool.query(if_user_name_exists_query,if_user_name_exists_query_vlaue);
     if(response.rowCount===0){
-        return res.json({message:"Username not found"});
+        return res.status(404).json({message:"Username not found"});
     }
     const db_hashed_password=response.rows[0]["password"];
     //checking if the password is right or not

@@ -26,7 +26,7 @@ export default function Auth_Page() {
       set_msg(res.payload?.message);
     }else{
       //call register action
-      await authDispatch(register({first_name,last_name,user_name,gender,password}));
+      const res=await authDispatch(register({first_name,last_name,user_name,gender,password}));
       set_msg(res.payload?.message);
     }
     set_first_name("");
