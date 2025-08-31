@@ -87,6 +87,7 @@ const outfit_category_slice=createSlice({
             state.isPending=false;
             state.isSuccess=false;
             state.message=action.payload?.message;
+            state.history=[];
         })//get today dress
         .addCase(get_today_dress.fulfilled,(state,action)=>{
             state.isSuccess=true;

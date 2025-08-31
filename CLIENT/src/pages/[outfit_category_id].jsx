@@ -152,7 +152,7 @@ function SDress() {
                       )}
                     </span>
                     <div className="text-sm text-gray-400">
-                    Created: {new Date(user_outfit?.created_at).toLocaleString('en-US', {
+                    Created: {new Date(user_outfit?.created_at).toLocaleString('en-IN', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })}
@@ -160,7 +160,7 @@ function SDress() {
                   </div>
                   <div className="text-xs text-gray-500">
                     Updated: {user_outfit?.updated_at 
-                    ? new Date(user_outfit.updated_at).toLocaleString('en-US', {
+                    ? new Date(user_outfit.updated_at).toLocaleString('en-IN', {
                     dateStyle: 'medium',
                     timeStyle: 'short',
                     }) 

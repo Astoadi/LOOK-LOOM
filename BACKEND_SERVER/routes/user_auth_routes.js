@@ -8,6 +8,7 @@ const router=Router({ mergeParams: true });
 router
 .get('/',authenticate_user,async_func(is_logged_in));
 
+
 router
 .post('/register',async_func(register));
 

@@ -4,7 +4,6 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { change_favorite_status, delete_dress, edit_dress_name, get_favorite_user_categories, get_user_dress } from '../redux/actions/dress';
-import MovingDots from '../components/dots';
 import { useNavigate } from 'react-router-dom';
 
 function Dresses() {
@@ -68,7 +67,7 @@ function Dresses() {
     <>
         <Navbar/>
         <div className='min-h-screen bg-gradient-to-r from-gray-900 to-black font-sans px-8 py-12'>
-          <div className='text-end text-[#fff] text-md underline'>History</div>
+          {/* <div className='text-end text-[#fff] text-md underline'>History</div> */}
           <div className='flex text-white gap-4 pb-4 mt-4'>
             <button onClick={()=>{
               setSelectedView(0);
@@ -77,7 +76,7 @@ function Dresses() {
               setSelectedView(1);
             }} className={`px-4 py-1 outline-none cursor-pointer border ${selectedView===1?'bg-white text-black' : 'text-white'}`}>Favorites</button>
           </div>
-          {loading&&<MovingDots/>}
+          {loading&&<></>}
         {display_dresses?.length > 0 ? (
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {display_dresses?.map((user_dress, index) => (
@@ -130,7 +129,7 @@ function Dresses() {
                       )}
                     </span>
                     <div className="text-sm text-gray-400">
-                    Created: {new Date(user_dress?.created_at).toLocaleString('en-US', {
+                    Created: {new Date(user_dress?.created_at).toLocaleString('en-IN', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })}
@@ -138,7 +137,7 @@ function Dresses() {
                   </div>
                   <div className="text-xs text-gray-500">
                     Updated: {user_dress?.updated_at 
-                    ? new Date(user_dress.updated_at).toLocaleString('en-US', {
+                    ? new Date(user_dress.updated_at).toLocaleString('en-IN', {
                     dateStyle: 'medium',
                     timeStyle: 'short',
                     }) 

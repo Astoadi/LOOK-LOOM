@@ -14,7 +14,7 @@ export const make_plan=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -30,7 +30,7 @@ export const get_today_plan=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -46,7 +46,7 @@ export const get_future_plans=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -62,7 +62,7 @@ export const get_history_plans=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -81,7 +81,7 @@ export const update_plan_date=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -97,7 +97,7 @@ export const delete_plan=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }

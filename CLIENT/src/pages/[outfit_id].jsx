@@ -119,7 +119,7 @@ function SOutfit() {
                       )}
                     </span>
                     <div className="text-sm text-gray-400">
-                    Created: {new Date(currOutfit?.created_at).toLocaleString('en-US', {
+                    Created: {new Date(currOutfit?.created_at).toLocaleString('en-IN', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })}
@@ -134,7 +134,7 @@ function SOutfit() {
                   </div>
                   <div className="text-xs text-gray-500">
                     Updated: {currOutfit?.updated_at 
-                    ? new Date(currOutfit.updated_at).toLocaleString('en-US', {
+                    ? new Date(currOutfit.updated_at).toLocaleString('en-IN', {
                     dateStyle: 'medium',
                     timeStyle: 'short',
                     }) 

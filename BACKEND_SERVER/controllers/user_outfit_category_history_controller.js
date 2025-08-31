@@ -59,7 +59,7 @@ export const is_today_dress_chosen=async (req,res)=>{
 
 //show history before today
 export const show_history=async (req,res)=>{
-    const query="SELECT * FROM outfit_category_history WHERE user_id=$1 AND last_used_at < CURRENT_DATE";
+    const query="SELECT oc.category_name, oc.outfit_category_id, och.last_used_at FROM outfit_categories oc INNER JOIN outfit_category_history och ON oc.outfit_category_id = och.outfit_category_id AND oc.user_id = och.user_id WHERE och.user_id = $1 AND och.last_used_at < CURRENT_DATE";
     const query_values=[req?.user?.user_id];
     const response=await pool.query(query,query_values);
     if(response.rowCount===0){

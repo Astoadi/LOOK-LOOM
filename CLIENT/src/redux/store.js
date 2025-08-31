@@ -4,13 +4,17 @@ import outfit_category_reducer from "./reducers/outfit_category_reducer/index.js
 import outfits from "./reducers/outfits/index.js";
 import dress from "./reducers/dress/index.js";
 import planner from "./reducers/planner/index.js";
+import profile from "./reducers/profile/index.js";
+import connection from "./reducers/connection/index.js";
 const store=configureStore({
     reducer:{
         auth:auth_reducer,
         outfit_category:outfit_category_reducer,
         outfit:outfits,
         dress:dress,
-        planner:planner
+        planner:planner,
+        profile:profile,
+        connection:connection
     }
 });
 

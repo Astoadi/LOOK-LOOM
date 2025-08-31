@@ -9,6 +9,9 @@ import Future_plans from './pages/future_plans';
 import SOutfit from './pages/[outfit_id]';
 import Dresses from './pages/dresses';
 import SDress from './pages/[outfit_category_id]';
+import MyProfile from './pages/myProfile';
+import Connections from './pages/connections';
+import ProfileId from './pages/[profile_id]';
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
           <Route path='/dresses' element={<Dresses/>} />
           <Route path='/future_plans' element={<Future_plans/>} />
           <Route path='/dresses/:outfit_category_id' element={<SDress/>} />
+          <Route path='/myProfile' element={<MyProfile/>}/>
+          <Route path='/connections' element={<Connections/>}/>
+          <Route path='/user/:pId' element={<ProfileId/>}/>
         </Routes>
       </Router>
     </>

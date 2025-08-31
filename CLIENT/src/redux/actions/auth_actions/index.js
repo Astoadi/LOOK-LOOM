@@ -8,7 +8,7 @@ export const isLoggedIn=createAsyncThunk(
             const response=await client_server.get('/auth/',{withCredentials:true});
             return thunkAPI.fulfillWithValue(response?.data);
         }catch(e){
-            console.log(e?.response?.data);
+            // console.log(e?.response?.data);
             return thunkAPI.rejectWithValue(e?.response?.data);
         }
     }
@@ -26,7 +26,7 @@ export const login=createAsyncThunk(
                 })
             return thunkAPI.fulfillWithValue(response.data)
         }catch(e){
-            console.log(e?.response?.data);
+            // console.log(e?.response?.data);
             return thunkAPI.rejectWithValue(e?.response?.data);
         }
     }
@@ -45,7 +45,7 @@ export const register=createAsyncThunk(
                 });
             return thunkAPI.fulfillWithValue(response.data)
         }catch(e){
-            console.log(e?.response?.data);
+            // console.log(e?.response?.data);
             return thunkAPI.rejectWithValue(e?.response?.data);
         }
     }
@@ -58,7 +58,7 @@ export const logout=createAsyncThunk(
             const response=await client_server.post("/auth/logout",{},{withCredentials:true});
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e?.response?.data);
+            // console.log(e?.response?.data);
             return thunkAPI.rejectWithValue(e?.response?.data);
         }
     }

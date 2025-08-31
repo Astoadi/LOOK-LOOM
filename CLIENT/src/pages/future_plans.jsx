@@ -120,15 +120,15 @@ function Future_Plans() {
                       onClick={() => {
                         if(displayMode===0){
                           //today
-                          setTodayPlans((prev)=>prev.map(p=>p.outfit_category_planner_id===dp.outfit_category_planner_id?{...p,plan_date: new Date(newPlanDate).toLocaleString('en-US', { dateStyle: 'medium',timeStyle: 'short',})}:p));
+                          setTodayPlans((prev)=>prev.map(p=>p.outfit_category_planner_id===dp.outfit_category_planner_id?{...p,plan_date: new Date(newPlanDate).toLocaleString('en-IN', { dateStyle: 'medium',timeStyle: 'short',})}:p));
                           dispatch(update_plan_date({outfit_category_planner_id:dp.outfit_category_planner_id,new_plan_date:newPlanDate}))
                         }else if(displayMode===1){
                           //future
-                          setFuturePlans((prev)=>prev.map(p=>p.outfit_category_planner_id===dp.outfit_category_planner_id?{...p,plan_date:new Date(newPlanDate).toLocaleString('en-US', { dateStyle: 'medium',timeStyle: 'short',})}:p));
+                          setFuturePlans((prev)=>prev.map(p=>p.outfit_category_planner_id===dp.outfit_category_planner_id?{...p,plan_date:new Date(newPlanDate).toLocaleString('en-IN', { dateStyle: 'medium',timeStyle: 'short',})}:p));
                           dispatch(update_plan_date({outfit_category_planner_id:dp.outfit_category_planner_id,new_plan_date:newPlanDate}))
                         }else{
                           //past
-                          setPastPlans((prev)=>prev.map(p=>p.outfit_category_planner_id===dp.outfit_category_planner_id?{...p,plan_date:new Date(newPlanDate).toLocaleString('en-US', { dateStyle: 'medium',timeStyle: 'short',})}:p));
+                          setPastPlans((prev)=>prev.map(p=>p.outfit_category_planner_id===dp.outfit_category_planner_id?{...p,plan_date:new Date(newPlanDate).toLocaleString('en-IN', { dateStyle: 'medium',timeStyle: 'short',})}:p));
                           dispatch(update_plan_date({outfit_category_planner_id:dp.outfit_category_planner_id,new_plan_date:newPlanDate}))
                         }
                         setNewPlanDate("");
@@ -171,13 +171,13 @@ function Future_Plans() {
                     }}></i>
                   </div>
                   <div className="text-sm text-gray-400">
-                    Plan Date : {new Date(dp?.plan_date).toLocaleString('en-US', {
+                    Plan Date : {new Date(dp?.plan_date).toLocaleString('en-IN', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })}
                   </div>
                   <div className="text-sm text-gray-400">
-                    Created At : {new Date(dp?.created_at).toLocaleString('en-US', {
+                    Created At : {new Date(dp?.created_at).toLocaleString('en-IN', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })}

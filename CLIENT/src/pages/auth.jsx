@@ -52,7 +52,7 @@ export default function Auth_Page() {
   }, [authState.message]);
 
   return (
-    <div className='h-auto md:h-screen w-screen bg-black flex justify-center items-center py-10'>
+    <div className='min-h-screen h-auto md:h-screen w-screen bg-black flex justify-center items-center py-10'>
       
       
       <div className='bg-zinc-900 flex flex-col md:flex-row h-full md:h-[80%] w-[90%] md:w-[80%] rounded-xl overflow-hidden shadow-lg'>

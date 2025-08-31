@@ -12,7 +12,7 @@ export const set_today_dress=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -29,7 +29,7 @@ export const update_today_dress=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -43,7 +43,7 @@ export const is_today_dress_chosen=createAsyncThunk(
             const response=await client_server.get('/outfit_category_history/is_today_dress_chosen',{withCredentials:true});
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -60,7 +60,7 @@ export const is_this_today_dress=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -76,7 +76,7 @@ export const show__dresses_history=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -90,7 +90,7 @@ export const get_today_dress=createAsyncThunk(
             const response=await client_server.get('/outfit_category_history/get_today_dress',{withCredentials:true});
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -105,7 +105,7 @@ export const remove_today_dress=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }

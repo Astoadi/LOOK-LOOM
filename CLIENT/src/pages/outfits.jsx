@@ -2,9 +2,8 @@ import React from 'react'
 import Auth_Guard from '../utils/auth_guard'
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
-import { change_favorite_status, delete_outfit, get_favorite_outfits, get_outfit, get_outfit_by_body_name } from '../redux/actions/outfits';
+import { delete_outfit, get_favorite_outfits, get_outfit, get_outfit_by_body_name } from '../redux/actions/outfits';
 import { useDispatch, useSelector } from 'react-redux';
-import MovingDots from '../components/dots';
 import { create_category } from '../redux/actions/dress';
 import { useNavigate } from 'react-router-dom';
 function Outfits() {
@@ -105,7 +104,7 @@ function Outfits() {
       <Navbar/>
       <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black font-sans py-8 px-4 md:px-12">
         <div className='flex items-center justify-center gap-4'>
-          <input type="text" onChange={(e)=>set_search_params(e.target.value)} required  placeholder='Search by body name' className='bg-zinc-800 text-gray-100 py-2 px-2 text-xl w-[30%] outline-none text-center rounded'/>
+          <input type="text" onChange={(e)=>set_search_params(e.target.value)} required  placeholder='Search by body name' className='bg-zinc-800 text-gray-100 py-2 px-2 text-xl min-w-[220px] w-[30%] outline-none text-center rounded'/>
           {search_params.length>0 && <button onClick={handleSearch} className='border cursor-pointer px-4 py-1 rounded text-white'>Search</button>}
         </div>
         <div className='flex text-white gap-4 pb-4 mt-4'>
@@ -124,7 +123,7 @@ function Outfits() {
           {(dressName.length>0 && outfit_ids.length>0) &&<button onClick={handleDressCreation} className='border cursor-pointer px-4 py-1 rounded text-white'>Create Dress</button>}
         </div>
         :<></>}
-        {loading&&<MovingDots/>}
+        {loading&&<></>}
         {display_outfits?.length > 0 ? (
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {display_outfits?.map((user_outfit, index) => (
@@ -159,7 +158,7 @@ function Outfits() {
                       )}
                     </span>
                     <div className="text-sm text-gray-400">
-                    Created: {new Date(user_outfit?.created_at).toLocaleString('en-US', {
+                    Created: {new Date(user_outfit?.created_at).toLocaleString('en-IN', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })}
@@ -167,7 +166,7 @@ function Outfits() {
                   </div>
                   <div className="text-xs text-gray-500">
                     Updated: {user_outfit?.updated_at 
-                    ? new Date(user_outfit.updated_at).toLocaleString('en-US', {
+                    ? new Date(user_outfit.updated_at).toLocaleString('en-IN', {
                     dateStyle: 'medium',
                     timeStyle: 'short',
                     }) 

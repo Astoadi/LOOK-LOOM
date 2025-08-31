@@ -9,7 +9,7 @@ export const get_user_dress=createAsyncThunk(
             const response=await client_server.get('/category/get_user_categories',{withCredentials:true});
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -25,7 +25,7 @@ export const get_dress_outfits=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -41,7 +41,7 @@ export const get_favorite_user_categories=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -59,7 +59,7 @@ export const change_favorite_status=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -78,7 +78,7 @@ export const create_category=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -97,7 +97,7 @@ export const edit_dress_name=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -113,7 +113,7 @@ export const delete_dress=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }

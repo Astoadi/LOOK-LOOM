@@ -18,7 +18,7 @@ export const create_outfit=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -33,7 +33,7 @@ export const get_outfit=createAsyncThunk(
             const response=await client_server.get('/outfits/get_outfits',{withCredentials:true});
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -48,7 +48,7 @@ export const get_favorite_outfits=createAsyncThunk(
             const response=await client_server.get('/outfits/get_favorite_outfits',{withCredentials:true});
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -67,7 +67,7 @@ export const get_outfit_by_body_name=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -87,7 +87,7 @@ export const change_favorite_status=createAsyncThunk(
             });
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -103,7 +103,7 @@ export const get_outfit_by_id=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -119,7 +119,7 @@ export const delete_outfit=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -141,7 +141,7 @@ export const update_outfit_image=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -159,7 +159,7 @@ export const update_outfit_body=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
@@ -177,7 +177,7 @@ export const change_is_active_status=createAsyncThunk(
             })
             return thunkAPI.fulfillWithValue(response.data);
         }catch(e){
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return thunkAPI.rejectWithValue(e.response.data);
         }
     }
