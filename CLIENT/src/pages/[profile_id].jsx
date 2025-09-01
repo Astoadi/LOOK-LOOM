@@ -61,7 +61,10 @@ export default function ProfileId() {
                                 <div className='text-[#fff]'>Total Dresses : {userProfile[0]?.TotalDresses}</div>
                         </div>
                     </div>
-                    {userProfile[0]?.isFriend && <div className='text-center text-[#0f0] border border-[#0f0] p-2'>Following</div>}
+                    {userProfile[0]?.isFriend ? <div className='text-center text-[#0f0] border border-[#0f0] p-2'>Following</div>:!clickedPending?<div className='cursor-pointer text-center text-[#fff] border border-[#fff] p-2' onClick={()=>{
+                        setClickedPending(true);
+                        dispatch(addFriend({connection_id:Number(pId)}));
+                    }}>Follow+</div>:<div className='text-center text-[#fff] border border-[#fff] p-2'>Pending</div>}
                     {
                         userProfile[0]?.TodayDressId!==null?
                             <div>
