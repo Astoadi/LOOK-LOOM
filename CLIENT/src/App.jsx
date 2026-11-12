@@ -1,6 +1,8 @@
 import './App.css'
 import React from 'react';
 import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
+import { MotionConfig } from 'motion/react';
+import { ScrollProgressBar } from './components/motion/index.jsx';
 import Landing_Page from './pages/landing_page.jsx';
 import Home_page from './pages/home_page.jsx';
 import Auth_Page from './pages/auth.jsx';
@@ -17,7 +19,8 @@ import ProfileId from './pages/[profile_id]';
 function App() {
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
+      <ScrollProgressBar />
       <Router>
         <Routes>
           <Route path="/" element={<Landing_Page/>} />
@@ -33,7 +36,7 @@ function App() {
           <Route path='/user/:pId' element={<ProfileId/>}/>
         </Routes>
       </Router>
-    </>
+    </MotionConfig>
   )
 }
 

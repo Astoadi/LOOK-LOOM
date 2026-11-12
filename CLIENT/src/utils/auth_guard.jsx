@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isLoggedIn } from "../redux/actions/auth_actions/index.js";
 import { useNavigate } from "react-router-dom";
 import LoadingCursor from "./loading_cursor.jsx";
@@ -8,7 +8,6 @@ const Auth_Guard = (Input_Comp) => {
   const WrappedAuthFunc = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const authState = useSelector((state) => state.auth);
     const [checkingAuth, setCheckingAuth] = useState(true); // ✅ start as true
 
     useEffect(() => {
