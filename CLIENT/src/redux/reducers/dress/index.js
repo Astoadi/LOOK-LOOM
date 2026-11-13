@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { change_favorite_status, create_category, delete_dress, edit_dress_name, get_dress_outfits, get_favorite_user_categories, get_user_dress } from "../../actions/dress"
+import { change_favorite_status, create_category, delete_dress, edit_dress_name, get_dress_outfits, get_favorite_user_categories, get_user_dress } from "../../actions/dress/index.js"
 
 const initialState={
     isSuccess:false,

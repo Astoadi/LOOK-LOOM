@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { change_favorite_status, change_is_active_status, create_outfit, delete_outfit, get_favorite_outfits, get_outfit, get_outfit_by_body_name, get_outfit_by_id, update_outfit_body, update_outfit_image } from "../../actions/outfits"
+import { change_favorite_status, change_is_active_status, create_outfit, delete_outfit, get_favorite_outfits, get_outfit, get_outfit_by_body_name, get_outfit_by_id, update_outfit_body, update_outfit_image } from "../../actions/outfits/index.js"
 
 const initialState={
     outfit:{},

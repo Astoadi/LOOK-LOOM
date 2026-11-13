@@ -1,5 +1,5 @@
-
 import React from 'react';
+
 const SIZES = {
   xs: 'w-3.5 h-3.5',
   sm: 'w-4 h-4',
@@ -11,7 +11,7 @@ const SIZES = {
 export default function Spinner({
   size = 'md',
   className = '',
-  color = 'text-purple-300',
+  color = 'text-zinc-900 dark:text-zinc-100',
   label,
 }) {
   const sizeClass = SIZES[size] || size;
@@ -33,12 +33,12 @@ export default function Spinner({
           strokeWidth="3"
         />
         <path
-          className="opacity-95"
+          className="opacity-90"
           fill="currentColor"
           d="M4 12a8 8 0 018-8v2.8a5.2 5.2 0 00-5.2 5.2H4z"
         />
       </svg>
-      {label && <span className="text-xs sm:text-sm text-[#a1a1a6] font-medium">{label}</span>}
+      {label && <span className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium">{label}</span>}
     </div>
   );
 }

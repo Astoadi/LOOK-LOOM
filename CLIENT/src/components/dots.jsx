@@ -6,13 +6,13 @@ export default function MovingDots({ className = '', size = 'md' }) {
   return (
     <div className={`inline-flex items-center gap-1.5 py-1 ${className}`} aria-label="Loading">
       <span
-        className={`${sizeClass} rounded-full bg-gradient-to-r from-purple-400 to-pink-400 shadow-[0_0_8px_rgba(192,132,252,0.5)] animate-pulse [animation-duration:1s] [animation-delay:0ms]`}
+        className={`${sizeClass} rounded-full bg-zinc-800 dark:bg-zinc-200 animate-pulse [animation-duration:1s] [animation-delay:0ms]`}
       />
       <span
-        className={`${sizeClass} rounded-full bg-gradient-to-r from-purple-400 to-pink-400 shadow-[0_0_8px_rgba(192,132,252,0.5)] animate-pulse [animation-duration:1s] [animation-delay:200ms]`}
+        className={`${sizeClass} rounded-full bg-zinc-800 dark:bg-zinc-200 animate-pulse [animation-duration:1s] [animation-delay:200ms]`}
       />
       <span
-        className={`${sizeClass} rounded-full bg-gradient-to-r from-purple-400 to-pink-400 shadow-[0_0_8px_rgba(192,132,252,0.5)] animate-pulse [animation-duration:1s] [animation-delay:400ms]`}
+        className={`${sizeClass} rounded-full bg-zinc-800 dark:bg-zinc-200 animate-pulse [animation-duration:1s] [animation-delay:400ms]`}
       />
     </div>
   );

@@ -4,20 +4,24 @@ import { APPLE_EASE } from '../hooks/useScrollAnimations.js';
 
 const typeConfig = {
   success: {
-    wrapper: 'bg-[#0f1d19]/90 border-emerald-400/40 text-emerald-100 shadow-[0_12px_36px_rgba(16,185,129,0.25)]',
-    icon: 'fa-solid fa-circle-check text-emerald-400',
+    wrapper: 'bg-emerald-50/95 dark:bg-[#0f1d19]/95 border-emerald-200 dark:border-emerald-500/30 text-emerald-900 dark:text-emerald-100 shadow-[0_8px_24px_rgba(16,185,129,0.15)]',
+    icon: 'fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400',
+    close: 'text-emerald-700/70 hover:text-emerald-950 hover:bg-emerald-100/60 dark:text-emerald-200/60 dark:hover:text-emerald-100 dark:hover:bg-white/10',
   },
   error: {
-    wrapper: 'bg-[#220f14]/90 border-rose-400/40 text-rose-100 shadow-[0_12px_36px_rgba(244,63,94,0.25)]',
-    icon: 'fa-solid fa-circle-exclamation text-rose-400',
+    wrapper: 'bg-rose-50/95 dark:bg-[#220f14]/95 border-rose-200 dark:border-rose-500/30 text-rose-900 dark:text-rose-100 shadow-[0_8px_24px_rgba(244,63,94,0.15)]',
+    icon: 'fa-solid fa-circle-exclamation text-rose-600 dark:text-rose-400',
+    close: 'text-rose-700/70 hover:text-rose-950 hover:bg-rose-100/60 dark:text-rose-200/60 dark:hover:text-rose-100 dark:hover:bg-white/10',
   },
   warning: {
-    wrapper: 'bg-[#22180a]/90 border-amber-400/40 text-amber-100 shadow-[0_12px_36px_rgba(251,191,36,0.25)]',
-    icon: 'fa-solid fa-triangle-exclamation text-amber-400',
+    wrapper: 'bg-amber-50/95 dark:bg-[#22180a]/95 border-amber-200 dark:border-amber-500/30 text-amber-900 dark:text-amber-100 shadow-[0_8px_24px_rgba(251,191,36,0.15)]',
+    icon: 'fa-solid fa-triangle-exclamation text-amber-600 dark:text-amber-400',
+    close: 'text-amber-700/70 hover:text-amber-950 hover:bg-amber-100/60 dark:text-amber-200/60 dark:hover:text-amber-100 dark:hover:bg-white/10',
   },
   info: {
-    wrapper: 'bg-[#141226]/90 border-purple-400/40 text-purple-100 shadow-[0_12px_36px_rgba(168,85,247,0.25)]',
-    icon: 'fa-solid fa-circle-info text-purple-400',
+    wrapper: 'bg-violet-50/95 dark:bg-[#18181b]/95 border-violet-200 dark:border-violet-700/40 text-violet-900 dark:text-violet-100 shadow-[0_8px_24px_rgba(139,92,246,0.15)]',
+    icon: 'fa-solid fa-circle-info text-violet-600 dark:text-violet-400',
+    close: 'text-violet-700/70 hover:text-violet-950 hover:bg-violet-100/60 dark:text-violet-200/60 dark:hover:text-violet-100 dark:hover:bg-white/10',
   },
 };
 
@@ -45,7 +49,7 @@ export default function Snackbar({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.96 }}
           transition={{ duration: 0.28, ease: APPLE_EASE }}
-          className={`fixed top-5 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-auto sm:max-w-md z-[200] flex items-center justify-between gap-3 px-4 py-3 rounded-2xl backdrop-blur-2xl border text-xs sm:text-sm font-medium shadow-[0_16px_40px_-8px_rgba(0,0,0,0.7)] ${config.wrapper}`}
+          className={`fixed top-5 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-auto sm:max-w-md z-[200] flex items-center justify-between gap-3 px-4 py-3 rounded-2xl backdrop-blur-2xl border text-xs sm:text-sm font-medium shadow-xl ${config.wrapper}`}
         >
           <div className="flex items-center gap-2.5 min-w-0">
             <i className={`text-sm shrink-0 ${config.icon}`} />
@@ -56,7 +60,7 @@ export default function Snackbar({
               type="button"
               onClick={onClose}
               aria-label="Close notification"
-              className="p-1 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
+              className={`p-1 rounded-full transition-colors shrink-0 cursor-pointer ${config.close}`}
             >
               <i className="fa-solid fa-xmark text-xs" />
             </button>

@@ -22,9 +22,9 @@ function LazyOutfitImage({ src, alt, onClick }) {
   const [loaded, setLoaded] = React.useState(false);
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-white/[0.02]">
+    <div className="relative h-full w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
       {!loaded && (
-        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] via-white/[0.05] to-white/[0.02] animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-100/40 via-zinc-100 to-violet-100/40 dark:from-violet-950/20 dark:via-zinc-800/40 dark:to-violet-950/20 animate-pulse" />
       )}
       <img
         src={src}
@@ -124,7 +124,7 @@ function SDress() {
         setSnackbar({
           show: true,
           type: 'success',
-          message: 'Event scheduled successfully! Check your Plans.',
+          message: 'Event scheduled successfully. Check your Event Schedule.',
         });
         setPlanDate('');
         setPlanNote('');
@@ -147,22 +147,19 @@ function SDress() {
       closeSnackbar();
 
       if (isThisTodayDress) {
-        // Remove as today dress
         await dispatch(remove_today_dress());
         setIsThisTodayDress(false);
         setHasGlobalTodayDress(false);
         setSnackbar({ show: true, type: 'info', message: "Removed from today's look." });
       } else if (hasGlobalTodayDress) {
-        // Update today dress
         await dispatch(update_today_dress({ outfit_category_id }));
         setIsThisTodayDress(true);
-        setSnackbar({ show: true, type: 'success', message: "Updated today's curated dress!" });
+        setSnackbar({ show: true, type: 'success', message: "Updated today's active look." });
       } else {
-        // Set as today dress
         await dispatch(set_today_dress({ outfit_category_id }));
         setIsThisTodayDress(true);
         setHasGlobalTodayDress(true);
-        setSnackbar({ show: true, type: 'success', message: "Set as today's curated dress!" });
+        setSnackbar({ show: true, type: 'success', message: "Set as today's active look." });
       }
       await dispatch(get_today_dress());
     } catch {
@@ -173,8 +170,7 @@ function SDress() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060608] text-[#f5f5f7] relative overflow-hidden font-sans flex flex-col justify-between selection:bg-purple-400/30 selection:text-white">
-      {/* Reusable Feedback Snackbar */}
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0c0e] text-zinc-900 dark:text-zinc-100 font-sans flex flex-col justify-between transition-colors duration-200">
       <Snackbar
         show={snackbar.show}
         type={snackbar.type}
@@ -182,55 +178,51 @@ function SDress() {
         onClose={closeSnackbar}
       />
 
-      {/* Ambient Lighting */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] max-w-[95vw] h-[350px] bg-purple-600/10 rounded-full blur-[130px]" />
-      <div className="pointer-events-none absolute bottom-40 right-[-10%] w-[450px] h-[450px] bg-pink-600/5 rounded-full blur-[140px]" />
-
       <div>
         <Navbar />
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8">
           {/* Back Navigation Button */}
-          <ScrollReveal y={16} duration={0.4}>
+          <ScrollReveal y={12} duration={0.35}>
             <button
               type="button"
               onClick={() => navigate('/dresses')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-[#a1a1a6] hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-all cursor-pointer w-fit select-none active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition-all cursor-pointer w-fit select-none active:scale-95 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
             >
-              <i className="fa-solid fa-arrow-left text-xs" />
+              <i className="fa-solid fa-arrow-left text-xs text-violet-500" />
               <span>Back to Dresses</span>
             </button>
           </ScrollReveal>
 
           {/* Top Bento Dashboard */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
-            {/* Category Overview & Today's Dress Action */}
-            <ScrollReveal y={20} duration={0.5} className="lg:col-span-6">
-              <div className="h-full rounded-3xl p-6 sm:p-8 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl relative overflow-hidden flex flex-col justify-between shadow-xl">
+            {/* Category Overview & Today's Dress Action with Pastel Lavender Wash */}
+            <ScrollReveal y={16} duration={0.4} className="lg:col-span-6">
+              <div className="h-full rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-violet-500/[0.08] via-white to-white dark:from-violet-500/[0.12] dark:via-[#161619] dark:to-[#161619] border border-violet-200/70 dark:border-violet-900/40 relative overflow-hidden flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-purple-200 bg-purple-500/10 border border-purple-500/20">
-                      <i className="fa-solid fa-layer-group text-xs text-purple-300" />
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-violet-700 dark:text-violet-300 bg-violet-100/80 dark:bg-violet-950/60 border border-violet-200 dark:border-violet-800/60">
+                      <i className="fa-solid fa-layer-group text-xs" />
                       <span>Category Curation</span>
                     </span>
 
-                    <span className="inline-flex items-center gap-1.5 text-xs text-[#a1a1a6] bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.06]">
+                    <span className="inline-flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-800/80 px-2.5 py-1 rounded-full border border-zinc-200/80 dark:border-zinc-700">
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
-                          isThisTodayDress ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-white/30'
+                          isThisTodayDress ? 'bg-emerald-500' : 'bg-zinc-400'
                         }`}
                       />
                       <span>{isThisTodayDress ? "Today's Active Look" : 'In Wardrobe'}</span>
                     </span>
                   </div>
 
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-purple-300">
+                  <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                     {categoryName || 'Curated Category'}
                   </h1>
 
-                  <p className="text-xs sm:text-sm text-[#86868b] leading-relaxed">
-                    {outfits.length} ensemble{outfits.length === 1 ? '' : 's'} grouped in this look.
-                    Toggle below to wear this collection today.
+                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                    {outfits.length} ensemble{outfits.length === 1 ? '' : 's'} cataloged in this look.
+                    Wear this curated ensemble today or plan it for an upcoming date.
                   </p>
                 </div>
 
@@ -239,10 +231,10 @@ function SDress() {
                     type="button"
                     disabled={isUpdatingToday}
                     onClick={handleToggleTodayDress}
-                    className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer active:scale-95 disabled:opacity-50 select-none shadow-md ${
+                    className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer active:scale-95 disabled:opacity-50 select-none shadow-sm ${
                       isThisTodayDress
-                        ? 'text-red-200 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30'
-                        : 'text-white bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500 hover:opacity-95 shadow-purple-500/25'
+                        ? 'text-rose-700 dark:text-rose-300 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/50 border border-rose-200 dark:border-rose-900/40'
+                        : 'text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25'
                     }`}
                   >
                     {isUpdatingToday ? (
@@ -271,19 +263,19 @@ function SDress() {
               </div>
             </ScrollReveal>
 
-            {/* Plan an Event Studio Card */}
-            <ScrollReveal y={20} delay={0.08} duration={0.5} className="lg:col-span-6">
-              <div className="h-full rounded-3xl p-6 sm:p-8 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl relative overflow-hidden flex flex-col justify-between shadow-xl">
+            {/* Plan an Event Studio Card with Pastel Rose / Blush Wash */}
+            <ScrollReveal y={16} delay={0.05} duration={0.4} className="lg:col-span-6">
+              <div className="h-full rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-rose-500/[0.08] via-white to-white dark:from-rose-500/[0.12] dark:via-[#161619] dark:to-[#161619] border border-rose-200/70 dark:border-rose-900/40 relative overflow-hidden flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
                 <div className="flex flex-col gap-2">
-                  <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-pink-300/90">
-                    <i className="fa-regular fa-calendar-check text-pink-400" />
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-100/80 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/60 w-fit">
+                    <i className="fa-regular fa-calendar-check text-xs" />
                     <span>Plan an Event</span>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                     Schedule This Look
                   </h2>
-                  <p className="text-xs sm:text-sm text-[#86868b]">
-                    Attach notes and schedule a target date on your calendar.
+                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                    Add styling notes and pick a date on your schedule calendar.
                   </p>
                 </div>
 
@@ -295,7 +287,7 @@ function SDress() {
                       value={planNote}
                       onChange={(e) => setPlanNote(e.target.value)}
                       placeholder="Event note (e.g. Gala dinner)..."
-                      className="rounded-xl bg-white/[0.04] border border-white/[0.1] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder:text-[#6e6e73] outline-none focus:border-purple-400/50 disabled:opacity-50"
+                      className="rounded-xl bg-white dark:bg-zinc-900 border border-rose-200/80 dark:border-rose-800/60 px-3.5 py-2.5 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:border-rose-400 dark:focus:border-rose-500 disabled:opacity-50"
                       required
                     />
 
@@ -304,7 +296,7 @@ function SDress() {
                       disabled={isPlanning}
                       value={planDate}
                       onChange={(e) => setPlanDate(e.target.value)}
-                      className="rounded-xl bg-white/[0.04] border border-white/[0.1] px-3.5 py-2.5 text-xs sm:text-sm text-white outline-none focus:border-purple-400/50 disabled:opacity-50 cursor-pointer"
+                      className="rounded-xl bg-white dark:bg-zinc-900 border border-rose-200/80 dark:border-rose-800/60 px-3.5 py-2.5 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 outline-none focus:border-rose-400 dark:focus:border-rose-500 disabled:opacity-50 cursor-pointer"
                       required
                     />
                   </div>
@@ -313,11 +305,11 @@ function SDress() {
                     <button
                       type="submit"
                       disabled={!planNote.trim() || !planDate || isPlanning}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-500 hover:opacity-95 active:scale-95 shadow-md shadow-pink-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 shadow-sm shadow-rose-500/25 active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
                     >
                       {isPlanning ? (
                         <>
-                          <Spinner size="xs" color="text-white" />
+                          <Spinner size="xs" color="currentColor" />
                           <span>Scheduling...</span>
                         </>
                       ) : (
@@ -335,41 +327,41 @@ function SDress() {
 
           {/* Ensembles in Category */}
           <div className="pt-2">
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white mb-4">
+            <h2 className="text-base sm:text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">
               Category Ensembles ({outfits.length})
             </h2>
 
             {pending ? (
               <div className="py-20 flex flex-col items-center justify-center gap-3">
-                <Spinner size="lg" color="text-purple-400" label="Loading category ensembles..." />
+                <Spinner size="lg" color="text-violet-600 dark:text-violet-400" label="Loading category ensembles..." />
               </div>
             ) : outfits.length > 0 ? (
               <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {outfits.map((outfit, index) => {
-                  const staggerDelay = Math.min((index % 4) * 0.08, 0.24);
+                  const staggerDelay = Math.min((index % 4) * 0.05, 0.2);
 
                   return (
                     <ScrollReveal
                       key={outfit.outfit_id}
-                      y={24}
+                      y={16}
                       delay={staggerDelay}
-                      amount={0.15}
-                      duration={0.5}
+                      amount={0.1}
+                      duration={0.4}
                     >
-                      <div className="group rounded-2xl border border-white/[0.08] hover:border-purple-300/30 bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col justify-between">
-                        {/* Image Showcase with Lazy Loading */}
-                        <div className="relative h-60 w-full overflow-hidden bg-black/40">
+                      <div className="group rounded-2xl border border-black/[0.06] dark:border-white/[0.08] hover:border-violet-200 dark:hover:border-violet-800 bg-white dark:bg-[#161619] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-none transition-all duration-200 flex flex-col justify-between">
+                        {/* Image Showcase */}
+                        <div className="relative h-60 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                           <LazyOutfitImage
                             src={outfit.image_url}
                             alt={outfit.body || 'Outfit'}
                             onClick={() => navigate(`/outfits/${outfit.outfit_id}`)}
                           />
 
-                          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/30 pointer-events-none" />
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/20 pointer-events-none" />
 
                           {outfit.is_favorite && (
-                            <span className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/45 backdrop-blur-md border border-white/15 flex items-center justify-center">
-                              <i className="fa-solid fa-heart text-pink-500 text-xs" />
+                            <span className="absolute top-3 right-3 w-7 h-7 rounded-full bg-rose-50/90 dark:bg-rose-950/60 backdrop-blur-md border border-rose-200/80 flex items-center justify-center shadow-sm">
+                              <i className="fa-solid fa-heart text-rose-500 text-xs" />
                             </span>
                           )}
                         </div>
@@ -378,25 +370,24 @@ function SDress() {
                         <div className="p-4 flex flex-col gap-2.5">
                           <h3
                             onClick={() => navigate(`/outfits/${outfit.outfit_id}`)}
-                            className="font-semibold text-base text-white hover:text-purple-200 transition-colors cursor-pointer truncate"
+                            className="font-medium text-sm sm:text-base text-zinc-900 dark:text-zinc-100 hover:text-violet-600 dark:hover:text-violet-300 transition-colors cursor-pointer truncate"
                             title={outfit.body}
                           >
                             {outfit.body || 'Untitled Look'}
                           </h3>
 
-                          <div className="flex items-center justify-between text-[11px] text-[#86868b] pt-1 border-t border-white/[0.05]">
+                          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                             <span>
                               {outfit.created_at
                                 ? new Date(outfit.created_at).toLocaleDateString('en-US', {
                                     month: 'short',
                                     day: 'numeric',
-                                    year: 'numeric',
                                   })
                                 : 'Cataloged'}
                             </span>
                             <span
                               onClick={() => navigate(`/outfits/${outfit.outfit_id}`)}
-                              className="text-purple-300 hover:text-purple-200 cursor-pointer font-medium"
+                              className="text-violet-600 dark:text-violet-400 hover:underline cursor-pointer font-medium"
                             >
                               Inspect →
                             </span>
@@ -408,15 +399,15 @@ function SDress() {
                 })}
               </div>
             ) : (
-              <div className="rounded-2xl p-12 bg-white/[0.02] border border-white/[0.06] flex flex-col items-center justify-center text-center gap-3">
-                <i className="fa-solid fa-shirt text-3xl text-purple-300/40" />
-                <p className="text-base font-semibold text-white/90">
+              <div className="rounded-3xl p-12 bg-white dark:bg-[#161619] border border-black/[0.06] dark:border-white/[0.08] flex flex-col items-center justify-center text-center gap-3">
+                <i className="fa-solid fa-shirt text-3xl text-zinc-300 dark:text-zinc-700" />
+                <p className="text-sm sm:text-base font-medium text-zinc-700 dark:text-zinc-300">
                   {emptyMessage || 'No outfits in this category'}
                 </p>
                 <button
                   type="button"
                   onClick={() => navigate('/outfits')}
-                  className="mt-2 inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] hover:border-purple-300/30 transition-all cursor-pointer"
+                  className="mt-2 inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25 transition-all cursor-pointer"
                 >
                   <i className="fa-solid fa-plus text-xs" />
                   <span>Assign Outfits from Wardrobe</span>

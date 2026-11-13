@@ -15,6 +15,14 @@ import {
   get_user_dress,
 } from '../redux/actions/dress';
 
+const PASTEL_BADGES = [
+  'bg-violet-100 dark:bg-violet-950/60 text-violet-600 dark:text-violet-300 border-violet-200/80 dark:border-violet-800/60',
+  'bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 border-rose-200/80 dark:border-rose-800/60',
+  'bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-300 border-sky-200/80 dark:border-sky-800/60',
+  'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-800/60',
+  'bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/60',
+];
+
 function Dresses() {
   const dispatch = useDispatch();
   const dressSelector = useSelector((state) => state.dress);
@@ -80,7 +88,6 @@ function Dresses() {
     }
   }, [selectedView, userDresses, favUserDresses, dressSelector.message]);
 
-  // Inline Rename
   const handleStartRename = (dress) => {
     setEditingDressId(dress.outfit_category_id);
     setNewDressName(dress.category_name);
@@ -119,7 +126,6 @@ function Dresses() {
     }
   };
 
-  // Toggle Favorite
   const handleToggleFavorite = async (dress) => {
     if (togglingFavId) return;
 
@@ -146,7 +152,6 @@ function Dresses() {
     }
   };
 
-  // Delete Category
   const handleDeleteCategory = async (dressId) => {
     if (deletingId) return;
 
@@ -171,8 +176,7 @@ function Dresses() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060608] text-[#f5f5f7] relative overflow-hidden font-sans flex flex-col justify-between selection:bg-purple-400/30 selection:text-white">
-      {/* Reusable Feedback Snackbar */}
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0c0e] text-zinc-900 dark:text-zinc-100 font-sans flex flex-col justify-between transition-colors duration-200">
       <Snackbar
         show={snackbar.show}
         type={snackbar.type}
@@ -180,49 +184,49 @@ function Dresses() {
         onClose={closeSnackbar}
       />
 
-      {/* Ambient Lights */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] max-w-[95vw] h-[350px] bg-purple-600/10 rounded-full blur-[130px]" />
-      <div className="pointer-events-none absolute bottom-40 right-[-10%] w-[450px] h-[450px] bg-pink-600/5 rounded-full blur-[140px]" />
-
       <div>
         <Navbar />
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8">
           {/* Header & Controls Bar */}
-          <ScrollReveal y={16} duration={0.5}>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+          <ScrollReveal y={12} duration={0.4}>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-purple-300">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-100/80 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/60 mb-2">
+                  <i className="fa-solid fa-layer-group text-[10px]" />
+                  <span>Curated Looks</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                   Dress Categories
                 </h1>
-                <p className="text-xs sm:text-sm text-[#86868b] mt-0.5">
-                  Organize, curate, and schedule looks for events and daily rotations.
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                  Organize and group outfits into curated looks for occasions and rotations.
                 </p>
               </div>
 
-              {/* Action Button */}
+              {/* Action Button with Contrast Highlight */}
               <button
                 type="button"
                 onClick={() => navigate('/outfits')}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-purple-500/15 hover:bg-purple-500/25 border border-purple-400/30 transition-all cursor-pointer w-fit active:scale-95 shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25 transition-all cursor-pointer w-fit active:scale-95"
               >
-                <i className="fa-solid fa-plus text-xs text-purple-300" />
+                <i className="fa-solid fa-plus text-xs" />
                 <span>Create New Category</span>
               </button>
             </div>
           </ScrollReveal>
 
           {/* Segmented Tab Filter */}
-          <ScrollReveal y={18} delay={0.08} duration={0.5}>
-            <div className="flex items-center justify-between p-2 rounded-2xl bg-white/[0.025] border border-white/[0.08] backdrop-blur-xl">
-              <div className="inline-flex items-center gap-1 p-1 rounded-full bg-black/40 border border-white/[0.06]">
+          <ScrollReveal y={12} delay={0.05} duration={0.4}>
+            <div className="flex items-center justify-between p-2 rounded-2xl bg-white dark:bg-[#161619] border border-black/[0.06] dark:border-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+              <div className="inline-flex items-center gap-1 p-1 rounded-full bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800">
                 <button
                   type="button"
                   onClick={() => setSelectedView(0)}
-                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer select-none ${
+                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-150 cursor-pointer select-none ${
                     selectedView === 0
-                      ? 'bg-white/[0.12] text-white border border-purple-300/35 shadow-[0_2px_12px_rgba(168,85,247,0.18)]'
-                      : 'text-[#a1a1a6] hover:text-white border border-transparent'
+                      ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/25'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300'
                   }`}
                 >
                   All Categories ({userDresses.length})
@@ -230,10 +234,10 @@ function Dresses() {
                 <button
                   type="button"
                   onClick={() => setSelectedView(1)}
-                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer select-none ${
+                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-150 cursor-pointer select-none ${
                     selectedView === 1
-                      ? 'bg-white/[0.12] text-white border border-purple-300/35 shadow-[0_2px_12px_rgba(168,85,247,0.18)]'
-                      : 'text-[#a1a1a6] hover:text-white border border-transparent'
+                      ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/25'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300'
                   }`}
                 >
                   Favorites ({favUserDresses.length})
@@ -245,7 +249,7 @@ function Dresses() {
           {/* Dresses Grid */}
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center gap-3">
-              <Spinner size="lg" color="text-purple-400" label="Curating dress categories..." />
+              <Spinner size="lg" color="text-violet-600 dark:text-violet-400" label="Loading categories..." />
             </div>
           ) : displayDresses.length > 0 ? (
             <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -253,38 +257,39 @@ function Dresses() {
                 const isEditing = editingDressId === dress.outfit_category_id;
                 const isDeleting = deletingId === dress.outfit_category_id;
                 const isTogglingFav = togglingFavId === dress.outfit_category_id;
-                const staggerDelay = Math.min((index % 4) * 0.08, 0.24);
+                const staggerDelay = Math.min((index % 4) * 0.05, 0.2);
+                const badgeColorClass = PASTEL_BADGES[index % PASTEL_BADGES.length];
 
                 return (
                   <ScrollReveal
                     key={dress.outfit_category_id}
-                    y={24}
+                    y={16}
                     delay={staggerDelay}
-                    amount={0.15}
-                    duration={0.5}
+                    amount={0.1}
+                    duration={0.4}
                   >
-                    <div className="group rounded-2xl border border-white/[0.08] hover:border-purple-300/35 bg-white/[0.03] backdrop-blur-xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between gap-5 relative overflow-hidden">
+                    <div className="group rounded-2xl border border-black/[0.06] dark:border-white/[0.08] hover:border-violet-200 dark:hover:border-violet-800 bg-white dark:bg-[#161619] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-none transition-all duration-200 flex flex-col justify-between gap-5 relative overflow-hidden">
                       {/* Top Row: Icon Badge & Actions */}
                       <div className="flex items-center justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-400/20 flex items-center justify-center text-purple-300 shadow-sm">
+                        <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shadow-sm ${badgeColorClass}`}>
                           <i className="fa-solid fa-layer-group text-sm" />
                         </div>
 
                         <div className="flex items-center gap-1">
-                          {/* Favorite Button */}
+                          {/* Favorite Button with Coral / Rose Accent */}
                           <button
                             type="button"
                             disabled={isTogglingFav}
                             onClick={() => handleToggleFavorite(dress)}
-                            className="p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer disabled:opacity-50"
+                            className="p-2 rounded-full text-zinc-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer disabled:opacity-50"
                             title={dress.is_favorite ? 'Favorited' : 'Add to favorites'}
                           >
                             {isTogglingFav ? (
-                              <Spinner size="xs" color="text-pink-400" />
+                              <Spinner size="xs" color="text-rose-500" />
                             ) : dress.is_favorite ? (
-                              <i className="fa-solid fa-heart text-pink-500 text-xs shadow-sm" />
+                              <i className="fa-solid fa-heart text-rose-500 text-xs shadow-sm" />
                             ) : (
-                              <i className="fa-regular fa-heart text-white/60 hover:text-white text-xs" />
+                              <i className="fa-regular fa-heart text-zinc-400 dark:text-zinc-500 text-xs" />
                             )}
                           </button>
 
@@ -293,11 +298,11 @@ function Dresses() {
                             type="button"
                             disabled={isDeleting}
                             onClick={() => handleDeleteCategory(dress.outfit_category_id)}
-                            className="p-2 rounded-full text-[#86868b] hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer disabled:opacity-40"
+                            className="p-2 rounded-full text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer disabled:opacity-40"
                             title="Delete category"
                           >
                             {isDeleting ? (
-                              <Spinner size="xs" color="text-red-400" />
+                              <Spinner size="xs" color="text-rose-500" />
                             ) : (
                               <i className="fa-solid fa-trash-can text-xs" />
                             )}
@@ -314,22 +319,22 @@ function Dresses() {
                               value={newDressName}
                               disabled={isRenaming}
                               onChange={(e) => setNewDressName(e.target.value)}
-                              className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.15] px-3 py-1.5 text-sm text-white placeholder:text-[#6e6e73] outline-none focus:border-purple-400/50"
+                              className="flex-1 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:border-violet-400 dark:focus:border-violet-500"
                               autoFocus
                             />
                             <button
                               type="button"
                               disabled={isRenaming}
                               onClick={() => handleSaveRename(dress.outfit_category_id)}
-                              className="px-2.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-purple-500 hover:bg-purple-600 disabled:opacity-50 cursor-pointer"
+                              className="px-2.5 py-1.5 rounded-xl text-xs font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm disabled:opacity-50 cursor-pointer"
                             >
-                              {isRenaming ? <Spinner size="xs" color="text-white" /> : '✓'}
+                              {isRenaming ? <Spinner size="xs" color="currentColor" /> : '✓'}
                             </button>
                             <button
                               type="button"
                               disabled={isRenaming}
                               onClick={handleCancelRename}
-                              className="px-2 py-1.5 rounded-xl text-xs text-[#a1a1a6] hover:text-white bg-white/10 cursor-pointer"
+                              className="px-2 py-1.5 rounded-xl text-xs text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 cursor-pointer"
                             >
                               ✕
                             </button>
@@ -338,7 +343,7 @@ function Dresses() {
                           <div className="flex items-center justify-between gap-2">
                             <h2
                               onClick={() => navigate(`/dresses/${dress.outfit_category_id}`)}
-                              className="text-lg sm:text-xl font-bold tracking-tight text-white hover:text-purple-200 transition-colors cursor-pointer truncate flex-1"
+                              className="text-base sm:text-lg font-medium text-zinc-900 dark:text-zinc-100 hover:text-violet-600 dark:hover:text-violet-300 transition-colors cursor-pointer truncate flex-1"
                               title={dress.category_name}
                             >
                               {dress.category_name}
@@ -346,7 +351,7 @@ function Dresses() {
                             <button
                               type="button"
                               onClick={() => handleStartRename(dress)}
-                              className="p-1 rounded-full text-[#86868b] hover:text-white transition-colors cursor-pointer"
+                              className="p-1 rounded-full text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors cursor-pointer"
                               title="Rename category"
                             >
                               <i className="fa-solid fa-pen text-[11px]" />
@@ -354,13 +359,12 @@ function Dresses() {
                           </div>
                         )}
 
-                        <span className="text-[11px] text-[#86868b]">
-                          Created on{' '}
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          Created{' '}
                           {dress.created_at
                             ? new Date(dress.created_at).toLocaleDateString('en-US', {
                                 month: 'short',
                                 day: 'numeric',
-                                year: 'numeric',
                               })
                             : 'Recently'}
                         </span>
@@ -370,10 +374,10 @@ function Dresses() {
                       <button
                         type="button"
                         onClick={() => navigate(`/dresses/${dress.outfit_category_id}`)}
-                        className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] hover:border-purple-300/30 transition-all cursor-pointer group/link"
+                        className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-50 hover:bg-violet-50/60 dark:bg-zinc-900/60 dark:hover:bg-violet-950/30 border border-zinc-200/80 dark:border-zinc-800 transition-all cursor-pointer group/link"
                       >
                         <span>Explore Ensembles</span>
-                        <i className="fa-solid fa-arrow-right text-xs text-purple-300 group-hover/link:translate-x-1 transition-transform" />
+                        <i className="fa-solid fa-arrow-right text-xs text-zinc-400 group-hover/link:text-violet-600 dark:group-hover/link:text-violet-400 group-hover/link:translate-x-0.5 transition-all" />
                       </button>
                     </div>
                   </ScrollReveal>
@@ -381,15 +385,17 @@ function Dresses() {
               })}
             </div>
           ) : (
-            <div className="rounded-2xl p-12 bg-white/[0.02] border border-white/[0.06] flex flex-col items-center justify-center text-center gap-3">
-              <i className="fa-solid fa-layer-group text-3xl text-purple-300/40" />
-              <p className="text-base font-semibold text-white/90">
+            <div className="rounded-3xl p-12 bg-white dark:bg-[#161619] border border-black/[0.06] dark:border-white/[0.08] flex flex-col items-center justify-center text-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-300 flex items-center justify-center text-xl">
+                <i className="fa-solid fa-layer-group" />
+              </div>
+              <p className="text-sm sm:text-base font-medium text-zinc-700 dark:text-zinc-300">
                 {emptyMessage || 'No categories created yet'}
               </p>
               <button
                 type="button"
                 onClick={() => navigate('/outfits')}
-                className="mt-2 inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] hover:border-purple-300/30 transition-all cursor-pointer"
+                className="mt-2 inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25 transition-all cursor-pointer"
               >
                 <i className="fa-solid fa-shirt text-xs" />
                 <span>Go to Wardrobe to Create</span>

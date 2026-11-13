@@ -74,7 +74,6 @@ function SOutfit() {
     }
   }, [outfitState.outfit, outfitState.message]);
 
-  // Handle Image Selection
   const handleImageFileSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -94,7 +93,6 @@ function SOutfit() {
     if (imageInputRef.current) imageInputRef.current.value = '';
   };
 
-  // Update Outfit Image
   const handleOutfitImageUpdation = async () => {
     if (!newOutfitImage || isUpdatingImage) return;
 
@@ -117,7 +115,6 @@ function SOutfit() {
     }
   };
 
-  // Update Outfit Body Description
   const handleOutfitBodyUpdation = async () => {
     if (isUpdatingBody) return;
     if (!newOutfitBody.trim()) {
@@ -145,7 +142,6 @@ function SOutfit() {
     }
   };
 
-  // Toggle Favorite Status
   const handleToggleFavorite = async () => {
     const newStatus = !like;
     try {
@@ -159,7 +155,6 @@ function SOutfit() {
     }
   };
 
-  // Toggle Wearable / Laundry Status
   const handleToggleWearable = async () => {
     if (isUpdatingStatus) return;
     const newWearable = !wearable;
@@ -183,8 +178,7 @@ function SOutfit() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060608] text-[#f5f5f7] relative overflow-hidden font-sans flex flex-col justify-between selection:bg-purple-400/30 selection:text-white">
-      {/* Reusable Feedback Snackbar */}
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0c0e] text-zinc-900 dark:text-zinc-100 font-sans flex flex-col justify-between transition-colors duration-200">
       <Snackbar
         show={snackbar.show}
         type={snackbar.type}
@@ -192,22 +186,18 @@ function SOutfit() {
         onClose={closeSnackbar}
       />
 
-      {/* Ambient Radial Lights */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] max-w-[95vw] h-[350px] bg-purple-600/10 rounded-full blur-[130px]" />
-      <div className="pointer-events-none absolute bottom-40 right-[-10%] w-[450px] h-[450px] bg-pink-600/5 rounded-full blur-[140px]" />
-
       <div>
         <Navbar />
 
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col gap-6">
           {/* Back Navigation Button */}
-          <ScrollReveal y={16} duration={0.4}>
+          <ScrollReveal y={12} duration={0.35}>
             <button
               type="button"
               onClick={() => navigate('/outfits')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-[#a1a1a6] hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-all cursor-pointer w-fit select-none active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition-all cursor-pointer w-fit select-none active:scale-95 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
             >
-              <i className="fa-solid fa-arrow-left text-xs" />
+              <i className="fa-solid fa-arrow-left text-xs text-violet-500" />
               <span>Back to Wardrobe</span>
             </button>
           </ScrollReveal>
@@ -215,23 +205,23 @@ function SOutfit() {
           {/* Loading / Content / Empty State */}
           {pending ? (
             <div className="py-24 flex flex-col items-center justify-center gap-3">
-              <Spinner size="lg" color="text-purple-400" label="Loading outfit details..." />
+              <Spinner size="lg" color="text-violet-600 dark:text-violet-400" label="Loading outfit details..." />
             </div>
           ) : currOutfit ? (
-            <ScrollReveal y={20} duration={0.5}>
-              <div className="rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+            <ScrollReveal y={16} duration={0.45}>
+              <div className="rounded-3xl border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-[#161619] overflow-hidden shadow-sm flex flex-col md:flex-row">
                 {/* Left: Image Showcase */}
-                <div className="relative md:w-1/2 min-h-[380px] bg-black/40 overflow-hidden group">
+                <div className="relative md:w-1/2 min-h-[340px] bg-zinc-100 dark:bg-zinc-900 overflow-hidden group">
                   <img
-                    className="w-full h-full min-h-[380px] max-h-[550px] object-cover transition-transform duration-500"
+                    className="w-full h-full min-h-[340px] max-h-[520px] object-cover transition-transform duration-500"
                     src={newImagePreview || outfitImage || currOutfit.image_url}
                     alt={outfitBody || 'Outfit'}
                     loading="lazy"
                     decoding="async"
                   />
 
-                  {/* Top Gradient & Edit Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
 
                   {/* Hidden File Input */}
                   <input
@@ -244,19 +234,19 @@ function SOutfit() {
                     disabled={isUpdatingImage}
                   />
 
-                  {/* Edit Image Action Button */}
+                  {/* Edit Image Action Button with Pastel Accent */}
                   {!newOutfitImage ? (
                     <label
                       htmlFor="outfit-image-change"
-                      className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white bg-black/60 hover:bg-black/80 border border-white/20 hover:border-purple-300/40 backdrop-blur-md cursor-pointer transition-all shadow-md active:scale-95"
+                      className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white bg-black/50 hover:bg-black/70 border border-white/20 backdrop-blur-md cursor-pointer transition-all shadow-sm active:scale-95"
                       title="Change photo"
                     >
-                      <i className="fa-solid fa-camera text-xs text-purple-300" />
+                      <i className="fa-solid fa-camera text-xs text-violet-300" />
                       <span>Update Photo</span>
                     </label>
                   ) : (
-                    <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-black/85 backdrop-blur-xl border border-white/20 flex items-center justify-between gap-2 shadow-2xl">
-                      <span className="text-xs text-purple-200 font-medium truncate">
+                    <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-zinc-900/90 dark:bg-black/90 backdrop-blur-xl border border-white/20 flex items-center justify-between gap-2 shadow-xl">
+                      <span className="text-xs text-white font-medium truncate">
                         Confirm photo update?
                       </span>
                       <div className="flex items-center gap-2">
@@ -264,10 +254,10 @@ function SOutfit() {
                           type="button"
                           disabled={isUpdatingImage}
                           onClick={handleOutfitImageUpdation}
-                          className="px-3.5 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+                          className="px-3.5 py-1 rounded-full text-xs font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
                         >
                           {isUpdatingImage ? (
-                            <Spinner size="xs" color="text-white" />
+                            <Spinner size="xs" color="currentColor" />
                           ) : (
                             <i className="fa-solid fa-check text-[10px]" />
                           )}
@@ -277,7 +267,7 @@ function SOutfit() {
                           type="button"
                           disabled={isUpdatingImage}
                           onClick={handleCancelNewImage}
-                          className="px-3 py-1 rounded-full text-xs font-medium text-[#a1a1a6] hover:text-white bg-white/10 hover:bg-white/20 cursor-pointer disabled:opacity-50"
+                          className="px-3 py-1 rounded-full text-xs font-medium text-zinc-400 hover:text-white bg-white/10 hover:bg-white/20 cursor-pointer disabled:opacity-50"
                         >
                           Cancel
                         </button>
@@ -293,7 +283,7 @@ function SOutfit() {
                     <div className="flex items-start justify-between gap-3">
                       {!inEditMode ? (
                         <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white truncate">
+                          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">
                             {outfitBody || 'Untitled Outfit'}
                           </h1>
                           <button
@@ -302,7 +292,7 @@ function SOutfit() {
                               setNewOutfitBody(outfitBody);
                               setEditMode(true);
                             }}
-                            className="p-1.5 rounded-full text-[#86868b] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-full text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 transition-colors cursor-pointer"
                             title="Edit notes"
                           >
                             <i className="fa-solid fa-pen text-xs" />
@@ -316,57 +306,75 @@ function SOutfit() {
                             onChange={(e) => setNewOutfitBody(e.target.value)}
                             disabled={isUpdatingBody}
                             placeholder="Describe your outfit..."
-                            className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.15] px-3.5 py-2 text-sm text-white placeholder:text-[#6e6e73] outline-none focus:border-purple-400/50"
+                            className="flex-1 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-3.5 py-2 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:border-violet-400 dark:focus:border-violet-500"
                             autoFocus
                           />
                           <button
                             type="button"
                             disabled={isUpdatingBody}
                             onClick={handleOutfitBodyUpdation}
-                            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-purple-500 hover:bg-purple-600 disabled:opacity-50 cursor-pointer flex items-center gap-1"
+                            className="px-3.5 py-2 rounded-xl text-xs font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm disabled:opacity-50 cursor-pointer flex items-center gap-1"
                           >
-                            {isUpdatingBody ? <Spinner size="xs" color="text-white" /> : 'Save'}
+                            {isUpdatingBody ? <Spinner size="xs" color="currentColor" /> : 'Save'}
                           </button>
                           <button
                             type="button"
                             disabled={isUpdatingBody}
                             onClick={() => setEditMode(false)}
-                            className="px-2.5 py-2 rounded-xl text-xs text-[#a1a1a6] hover:text-white bg-white/10 cursor-pointer"
+                            className="px-2.5 py-2 rounded-xl text-xs text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 cursor-pointer"
                           >
                             ✕
                           </button>
                         </div>
                       )}
 
-                      {/* Favorite Button */}
+                      {/* Favorite Button with Coral / Rose Pastel Accent */}
                       <button
                         type="button"
                         onClick={handleToggleFavorite}
-                        className="w-9 h-9 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] flex items-center justify-center transition-all cursor-pointer select-none active:scale-95 flex-shrink-0"
+                        className="w-9 h-9 rounded-full bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 border border-rose-200/80 dark:border-rose-800/50 flex items-center justify-center transition-all cursor-pointer select-none active:scale-95 flex-shrink-0"
                         title={like ? 'Favorited' : 'Add to favorites'}
                       >
                         {like ? (
-                          <i className="fa-solid fa-heart text-pink-500 text-sm shadow-sm" />
+                          <i className="fa-solid fa-heart text-rose-500 text-sm shadow-sm" />
                         ) : (
-                          <i className="fa-regular fa-heart text-white/60 hover:text-white text-sm" />
+                          <i className="fa-regular fa-heart text-rose-400 dark:text-rose-400 hover:text-rose-600 text-sm" />
                         )}
                       </button>
                     </div>
 
-                    {/* Wearable / Laundry Status Card */}
-                    <div className="rounded-2xl p-4 bg-white/[0.025] border border-white/[0.06] flex items-center justify-between gap-3">
+                    {/* Wearable / Laundry Status Card with Pastel Tints */}
+                    <div
+                      className={`rounded-2xl p-4 border flex items-center justify-between gap-3 ${
+                        wearable
+                          ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-200/80 dark:border-emerald-800/40'
+                          : 'bg-amber-50/70 dark:bg-amber-950/30 border-amber-200/80 dark:border-amber-800/40'
+                      }`}
+                    >
                       <div className="flex items-center gap-2.5">
                         <span
-                          className={`w-2.5 h-2.5 rounded-full ${
-                            wearable ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-amber-400 shadow-[0_0_8px_#fbbf24]'
+                          className={`w-2 h-2 rounded-full ${
+                            wearable ? 'bg-emerald-500' : 'bg-amber-500'
                           }`}
                         />
                         <div className="flex flex-col">
-                          <span className="text-xs sm:text-sm font-semibold text-white">
-                            {wearable ? 'Clean & Wearable' : 'Needs Laundry'}
+                          <span
+                            className={`text-xs sm:text-sm font-semibold ${
+                              wearable
+                                ? 'text-emerald-900 dark:text-emerald-200'
+                                : 'text-amber-900 dark:text-amber-200'
+                            }`}
+                          >
+                            {wearable ? 'Clean & Ready to Wear' : 'Needs Laundry'}
                           </span>
-                          <span className="text-[11px] text-[#86868b]">
-                            {wearable ? 'Ready for your daily rotation' : 'Marked as dirty'}
+                          <span
+                            className={`text-xs ${
+                              wearable
+                                ? 'text-emerald-700 dark:text-emerald-400'
+                                : 'text-amber-700 dark:text-amber-400'
+                            }`}
+                          >
+                            {wearable ? 'Available in your rotation' : 'Marked as dirty'}
                           </span>
                         </div>
                       </div>
@@ -375,10 +383,10 @@ function SOutfit() {
                         type="button"
                         disabled={isUpdatingStatus}
                         onClick={handleToggleWearable}
-                        className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer active:scale-95 disabled:opacity-50 select-none ${
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer active:scale-95 disabled:opacity-50 select-none shadow-sm ${
                           wearable
-                            ? 'text-amber-200 bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/20'
-                            : 'text-emerald-200 bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/20'
+                            ? 'text-amber-800 dark:text-amber-200 bg-white hover:bg-amber-50 dark:bg-amber-900/40 dark:hover:bg-amber-900/60 border-amber-300 dark:border-amber-700'
+                            : 'text-emerald-800 dark:text-emerald-200 bg-white hover:bg-emerald-50 dark:bg-emerald-900/40 dark:hover:bg-emerald-900/60 border-emerald-300 dark:border-emerald-700'
                         }`}
                       >
                         {isUpdatingStatus ? (
@@ -393,10 +401,10 @@ function SOutfit() {
                   </div>
 
                   {/* Metadata Timestamps */}
-                  <div className="pt-4 border-t border-white/[0.06] flex flex-col gap-1.5 text-xs text-[#86868b]">
+                  <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
                     <div className="flex items-center justify-between">
                       <span>Created</span>
-                      <span className="text-white/80">
+                      <span className="text-zinc-700 dark:text-zinc-300">
                         {currOutfit?.created_at
                           ? new Date(currOutfit.created_at).toLocaleString('en-US', {
                               dateStyle: 'medium',
@@ -408,7 +416,7 @@ function SOutfit() {
                     {currOutfit?.updated_at && (
                       <div className="flex items-center justify-between">
                         <span>Last Updated</span>
-                        <span className="text-white/80">
+                        <span className="text-zinc-700 dark:text-zinc-300">
                           {new Date(currOutfit.updated_at).toLocaleString('en-US', {
                             dateStyle: 'medium',
                             timeStyle: 'short',
@@ -421,15 +429,15 @@ function SOutfit() {
               </div>
             </ScrollReveal>
           ) : (
-            <div className="rounded-2xl p-12 bg-white/[0.02] border border-white/[0.06] flex flex-col items-center justify-center text-center gap-3">
-              <i className="fa-solid fa-shirt text-3xl text-purple-300/40" />
-              <p className="text-base font-semibold text-white/90">
+            <div className="rounded-2xl p-12 bg-white dark:bg-[#161619] border border-black/[0.06] dark:border-white/[0.08] flex flex-col items-center justify-center text-center gap-3">
+              <i className="fa-solid fa-shirt text-3xl text-zinc-300 dark:text-zinc-700" />
+              <p className="text-sm sm:text-base font-medium text-zinc-700 dark:text-zinc-300">
                 {emptyMessage || 'Outfit not found'}
               </p>
               <button
                 type="button"
                 onClick={() => navigate('/outfits')}
-                className="mt-2 px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] transition-all cursor-pointer"
+                className="mt-2 px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25 transition-all cursor-pointer"
               >
                 Back to Outfits
               </button>

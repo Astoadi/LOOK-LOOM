@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import client_server from "../../../config/client_server";
+import client_server from "../../../config/client_server.js";
 
 //adding friend request
 export const addFriend=createAsyncThunk(

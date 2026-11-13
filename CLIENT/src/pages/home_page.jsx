@@ -8,67 +8,77 @@ import Snackbar from '../components/snackbar';
 import Spinner from '../components/spinner';
 import MovingDots from '../components/dots';
 import { ScrollReveal } from '../components/motion/index.jsx';
+import { create_outfit, get_outfit } from '../redux/actions/outfits';
 import { get_today_dress, is_today_dress_chosen } from '../redux/actions/outfit_category_actions';
-import { create_outfit } from '../redux/actions/outfits';
 
 function Home_Page() {
+  const outfitCategoryState = useSelector((state) => state.outfit_category) || {};
   const authState = useSelector((state) => state.auth);
-  const outfit_Category_state = useSelector((state) => state.outfit_category);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [outfit_body, set_outfit_body] = React.useState('');
-  const [outfit_image, set_outfit_image] = React.useState(null);
-  const [image_file, set_image_file] = React.useState(null);
-  const [isCreating, setIsCreating] = React.useState(false);
+  const [outfitBody, setOutfitBody] = React.useState('');
+  const [outfitImage, setOutfitImage] = React.useState(null);
+  const [imageFile, setImageFile] = React.useState(null);
   const [isReadingImage, setIsReadingImage] = React.useState(false);
-  const [snackbar, setSnackbar] = React.useState({ show: false, type: 'success', message: '' });
+  const [isCreating, setIsCreating] = React.useState(false);
 
   const [todayDressStatus, setTodayDressStatus] = React.useState(false);
-  const [todayEmptyDressMsg, setTodayEmptyDressMsg] = React.useState('');
   const [todayDress, setTodayDress] = React.useState('');
-  const [tDressID, setTDressID] = React.useState(0);
+  const [todayEmptyDressMsg, setTodayEmptyDressMsg] = React.useState('');
+  const [tDressID, setTDressID] = React.useState(null);
 
+  const [snackbar, setSnackbar] = React.useState({ show: false, type: 'success', message: '' });
   const fileInputRef = React.useRef(null);
+
   const closeSnackbar = () => setSnackbar((prev) => ({ ...prev, show: false }));
 
-  // Today's dress status check
+  // Check today's dress on mount
   React.useEffect(() => {
-    async function checkingTodayDress() {
+    async function checkTodayDress() {
       try {
-        const res1 = await dispatch(is_today_dress_chosen()).unwrap();
-        setTodayDressStatus(res1.status);
+        const res = await dispatch(is_today_dress_chosen()).unwrap();
+        setTodayDressStatus(Boolean(res?.status));
         await dispatch(get_today_dress());
-        if (outfit_Category_state.today_dress_name?.length > 0) {
-          setTodayDress(outfit_Category_state.today_dress_name);
-          setTDressID(outfit_Category_state.today_dress_id);
-          setTodayEmptyDressMsg('');
-        } else {
-          setTodayDress('');
-          setTodayEmptyDressMsg('Not Set Yet');
-        }
       } catch (e) {
-        console.error(e);
+        console.error('Error checking today dress:', e);
       }
     }
-    checkingTodayDress();
+    checkTodayDress();
+  }, [dispatch]);
+
+  // Sync today's dress from Redux state
+  React.useEffect(() => {
+    if (outfitCategoryState?.today_dress_set !== undefined) {
+      setTodayDressStatus(Boolean(outfitCategoryState.today_dress_set));
+    }
+    if (outfitCategoryState?.today_dress_name) {
+      setTodayDress(outfitCategoryState.today_dress_name);
+      setTDressID(outfitCategoryState.today_dress_id);
+      setTodayEmptyDressMsg('');
+    } else {
+      setTodayDress('');
+      setTDressID(null);
+      setTodayEmptyDressMsg(outfitCategoryState?.message || '');
+    }
   }, [
-    dispatch,
-    outfit_Category_state.today_dress_name,
-    outfit_Category_state.today_dress_set,
-    outfit_Category_state.today_dress_id,
+    outfitCategoryState?.today_dress_set,
+    outfitCategoryState?.today_dress_name,
+    outfitCategoryState?.today_dress_id,
+    outfitCategoryState?.message,
   ]);
 
+  // Handle local image file selection
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (file.type.startsWith('image/')) {
       setIsReadingImage(true);
-      set_outfit_image(file);
+      setOutfitImage(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        set_image_file(reader.result);
+      reader.onload = () => {
+        setImageFile(reader.result);
         setIsReadingImage(false);
       };
       reader.onerror = () => {
@@ -77,52 +87,46 @@ function Home_Page() {
       };
       reader.readAsDataURL(file);
     } else {
-      set_outfit_image(null);
-      set_image_file(null);
-      setSnackbar({ show: true, type: 'error', message: 'Please select a valid image (PNG, JPG, WEBP).' });
+      setSnackbar({ show: true, type: 'error', message: 'Please select a valid image file.' });
     }
   };
 
   const handleClearImage = () => {
-    if (isCreating) return;
-    set_outfit_image(null);
-    set_image_file(null);
+    setOutfitImage(null);
+    setImageFile(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  // Submit outfit creation
   const handleOutfitCreation = async (e) => {
-    e?.preventDefault();
-    if (isCreating) return;
-
-    if (!outfit_body.trim() || !outfit_image) {
-      setSnackbar({ show: true, type: 'error', message: 'Please provide both description and image.' });
-      return;
-    }
+    e.preventDefault();
+    if (!outfitBody.trim() || !outfitImage || isCreating) return;
 
     try {
       setIsCreating(true);
       closeSnackbar();
-      const result = await dispatch(create_outfit({ outfit_body, outfit_image }));
-      const isSuccess = !result.error && (result.type?.endsWith('/fulfilled') ?? false);
+
+      const res = await dispatch(create_outfit({ body: outfitBody.trim(), outfit_image: outfitImage }));
+      const isSuccess = !res.error && (res.type?.endsWith('/fulfilled') ?? false);
 
       if (isSuccess) {
         setSnackbar({
           show: true,
           type: 'success',
-          message: result.payload?.message || 'Outfit created successfully!',
+          message: res.payload?.message || 'Look cataloged successfully!',
         });
-        set_outfit_body('');
+        setOutfitBody('');
         handleClearImage();
-        setTimeout(() => navigate('/outfits'), 1000);
+        await dispatch(get_outfit());
       } else {
         setSnackbar({
           show: true,
           type: 'error',
-          message: result?.payload?.message || result?.error?.message || 'Failed to create outfit.',
+          message: res.payload?.message || 'Failed to create outfit.',
         });
       }
     } catch {
-      setSnackbar({ show: true, type: 'error', message: 'A network error occurred. Please try again.' });
+      setSnackbar({ show: true, type: 'error', message: 'An unexpected error occurred.' });
     } finally {
       setIsCreating(false);
     }
@@ -131,8 +135,7 @@ function Home_Page() {
   const isFormLocked = isCreating || isReadingImage;
 
   return (
-    <div className="min-h-screen bg-[#060608] text-[#f5f5f7] relative overflow-hidden font-sans flex flex-col justify-between selection:bg-purple-400/30 selection:text-white">
-      {/* Reusable Apple Feedback Snackbar */}
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0c0e] text-zinc-900 dark:text-zinc-100 font-sans flex flex-col justify-between transition-colors duration-200">
       <Snackbar
         show={snackbar.show}
         type={snackbar.type}
@@ -140,74 +143,90 @@ function Home_Page() {
         onClose={closeSnackbar}
       />
 
-      {/* Subtle Ambient Lights */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[650px] max-w-[95vw] h-[320px] bg-purple-600/10 rounded-full blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-40 right-[-10%] w-[450px] h-[450px] bg-pink-600/5 rounded-full blur-[140px]" />
-
       <div>
         <Navbar />
 
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-6">
-          {/* Top Bento Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* User Greeting Card */}
-            <ScrollReveal y={20} duration={0.5}>
-              <div className="h-full rounded-2xl p-6 sm:p-7 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl relative overflow-hidden flex flex-col justify-between shadow-xl group hover:border-purple-300/25 transition-all">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8">
+          {/* Top Bento Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            {/* Welcome Greeting with Pastel Lavender Gradient */}
+            <ScrollReveal y={12} duration={0.4}>
+              <div className="h-full rounded-3xl p-6 sm:p-7 bg-gradient-to-br from-violet-500/[0.08] via-white to-white dark:from-violet-500/[0.12] dark:via-[#161619] dark:to-[#161619] border border-violet-200/70 dark:border-violet-900/40 shadow-[0_1px_3px_rgba(0,0,0,0.03)] flex flex-col justify-between gap-4">
                 <div className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-purple-300/80 tracking-wide uppercase">
-                    Dashboard
-                  </span>
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-purple-300">
-                    Hey @{authState?.user?.user_name || 'there'}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-violet-700 dark:text-violet-300 bg-violet-100/80 dark:bg-violet-950/60 border border-violet-200 dark:border-violet-800/60 w-fit">
+                    <i className="fa-solid fa-sparkles text-[10px]" />
+                    <span>Studio Dashboard</span>
+                  </div>
+
+                  <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+                    Hey, @{authState?.user?.user_name || 'Curator'}
                   </h1>
-                  <p className="text-xs sm:text-sm text-[#86868b] leading-relaxed">
-                    Curate your daily rotation and manage your outfits.
+                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                    Welcome to your personal style laboratory. Catalog pieces, design ensembles, and rotate your signature looks.
                   </p>
                 </div>
 
-                <div className="pt-5 flex items-center gap-2.5">
+                <div className="pt-2 flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => navigate('/outfits')}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] hover:border-purple-300/30 transition-all cursor-pointer active:scale-95"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25 transition-all cursor-pointer select-none active:scale-95"
                   >
-                    <i className="fa-solid fa-shirt text-xs text-purple-300" />
-                    <span>View Wardrobe</span>
+                    <i className="fa-solid fa-shirt text-xs" />
+                    <span>Browse Wardrobe</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => navigate('/future_plans')}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium text-[#a1a1a6] hover:text-white bg-white/[0.02] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] transition-all cursor-pointer active:scale-95"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 transition-colors cursor-pointer select-none active:scale-95"
                   >
                     <i className="fa-regular fa-calendar text-xs" />
-                    <span>Plans</span>
+                    <span>Event Schedule</span>
                   </button>
                 </div>
               </div>
             </ScrollReveal>
 
-            {/* Today's Dress Card */}
-            <ScrollReveal y={20} delay={0.08} duration={0.5}>
-              <div className="h-full rounded-2xl p-6 sm:p-7 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl relative overflow-hidden flex flex-col justify-between shadow-xl group hover:border-pink-400/25 transition-all">
-                <div className="flex flex-col gap-3">
+            {/* Today's Look Card with Pastel Mint / Emerald Gradient */}
+            <ScrollReveal y={12} delay={0.06} duration={0.4}>
+              <div
+                className={`h-full rounded-3xl p-6 sm:p-7 bg-gradient-to-br shadow-[0_1px_3px_rgba(0,0,0,0.03)] flex flex-col justify-between gap-4 border transition-colors ${
+                  todayDressStatus && todayDress
+                    ? 'from-emerald-500/[0.08] via-white to-white dark:from-emerald-500/[0.14] dark:via-[#161619] dark:to-[#161619] border-emerald-200/80 dark:border-emerald-900/50'
+                    : 'from-amber-500/[0.06] via-white to-white dark:from-amber-500/[0.1] dark:via-[#161619] dark:to-[#161619] border-amber-200/70 dark:border-amber-900/40'
+                }`}
+              >
+                <div className="flex flex-col gap-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-pink-300/80 tracking-wide uppercase flex items-center gap-1.5">
-                      <i className="fa-solid fa-sparkles text-pink-400 text-xs" />
-                      <span>Today's Dress</span>
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full border ${
+                        todayDressStatus && todayDress
+                          ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800/60'
+                          : 'text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 border-amber-200 dark:border-amber-800/60'
+                      }`}
+                    >
+                      <i className="fa-solid fa-wand-magic-sparkles text-[10px]" />
+                      <span>Today's Rotation</span>
                     </span>
 
-                    <span className="inline-flex items-center gap-1.5 text-xs text-[#a1a1a6] bg-white/[0.04] px-2.5 py-0.5 rounded-full border border-white/[0.06]">
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full border ${
+                        todayDressStatus
+                          ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60'
+                          : 'text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'
+                      }`}
+                    >
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
-                          todayDressStatus ? 'bg-emerald-400 shadow-[0_0_6px_#34d399]' : 'bg-amber-400'
+                          todayDressStatus ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-400'
                         }`}
                       />
-                      <span>{todayDressStatus ? 'Active' : 'Not Set'}</span>
+                      <span>{todayDressStatus ? 'Active Look' : 'Unassigned'}</span>
                     </span>
                   </div>
 
                   <div>
-                    {outfit_Category_state.isPending ? (
+                    {outfitCategoryState?.isPending ? (
                       <div className="py-2">
                         <MovingDots />
                       </div>
@@ -219,20 +238,20 @@ function Home_Page() {
                             navigate(`/dresses/${id}`);
                           }
                         }}
-                        className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-300 via-pink-300 to-pink-500 cursor-pointer hover:opacity-85 transition-opacity inline-flex items-center gap-2"
+                        className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors inline-flex items-center gap-2"
                       >
                         <span>{todayDress}</span>
-                        <i className="fa-solid fa-arrow-up-right-from-square text-xs text-pink-400/70" />
+                        <i className="fa-solid fa-arrow-up-right-from-square text-xs text-emerald-500" />
                       </div>
                     ) : (
-                      <span className="text-xl sm:text-2xl font-semibold text-white/90">
-                        {todayEmptyDressMsg || 'Not Set Yet'}
+                      <span className="text-base sm:text-lg font-medium text-zinc-500 dark:text-zinc-400">
+                        {todayEmptyDressMsg || 'No dress assigned for today yet'}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="pt-5">
+                <div className="pt-2">
                   {todayDressStatus && todayDress ? (
                     <button
                       type="button"
@@ -242,19 +261,19 @@ function Home_Page() {
                           navigate(`/dresses/${id}`);
                         }
                       }}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium text-white bg-pink-500/15 hover:bg-pink-500/25 border border-pink-400/25 transition-all cursor-pointer active:scale-95"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-emerald-800 dark:text-emerald-200 bg-emerald-100/80 hover:bg-emerald-200/80 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 border border-emerald-300/80 dark:border-emerald-800/60 transition-colors cursor-pointer select-none active:scale-95"
                     >
-                      <span>Explore Category</span>
+                      <span>Explore Look Ensembles</span>
                       <i className="fa-solid fa-arrow-right text-[10px]" />
                     </button>
                   ) : (
                     <button
                       type="button"
                       onClick={() => navigate('/dresses')}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] hover:border-pink-300/30 transition-all cursor-pointer active:scale-95"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 shadow-sm shadow-amber-500/20 transition-colors cursor-pointer select-none active:scale-95"
                     >
-                      <i className="fa-solid fa-layer-group text-xs text-pink-300" />
-                      <span>Choose Look</span>
+                      <i className="fa-solid fa-layer-group text-xs" />
+                      <span>Choose Look for Today</span>
                     </button>
                   )}
                 </div>
@@ -263,26 +282,31 @@ function Home_Page() {
           </div>
 
           {/* Create Outfit Studio */}
-          <ScrollReveal y={24} delay={0.12} duration={0.55}>
-            <div className="rounded-2xl p-6 sm:p-8 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl shadow-xl flex flex-col gap-5">
-              <div className="flex flex-col gap-1">
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-purple-300">
-                  Create New Outfit
-                </h2>
-                <p className="text-xs sm:text-sm text-[#86868b]">
-                  Add styling details and an image to catalog your look.
-                </p>
+          <ScrollReveal y={16} delay={0.1} duration={0.4}>
+            <div className="rounded-3xl p-6 sm:p-8 bg-white dark:bg-[#161619] border border-black/[0.06] dark:border-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03)] flex flex-col gap-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-violet-100 dark:bg-violet-950/60 border border-violet-200/70 dark:border-violet-800/50 flex items-center justify-center text-violet-600 dark:text-violet-300">
+                  <i className="fa-solid fa-plus text-sm" />
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+                    Catalog a New Outfit
+                  </h2>
+                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                    Snap or upload a photo, attach styling tags, and save it to your collection.
+                  </p>
+                </div>
               </div>
 
-              <form onSubmit={handleOutfitCreation} className="flex flex-col gap-5">
+              <form onSubmit={handleOutfitCreation} className="flex flex-col gap-4">
                 {/* Description Input */}
                 <input
                   disabled={isFormLocked}
-                  className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] px-4 py-3 text-sm sm:text-base text-white placeholder:text-[#6e6e73] outline-none focus:border-purple-400/50 focus:bg-white/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  onChange={(e) => set_outfit_body(e.target.value)}
-                  value={outfit_body}
+                  className="w-full rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-400/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  onChange={(e) => setOutfitBody(e.target.value)}
+                  value={outfitBody}
                   type="text"
-                  placeholder="Describe your outfit (e.g. Linen blazer with relaxed trousers)..."
+                  placeholder="Describe your outfit (e.g. Navy tailored linen blazer with cream chinos)..."
                   required
                 />
 
@@ -298,61 +322,61 @@ function Home_Page() {
                 />
 
                 {/* Dropzone or Preview */}
-                {!image_file ? (
+                {!imageFile ? (
                   <label
                     htmlFor={isFormLocked ? undefined : 'outfit-file-upload'}
-                    className={`border-2 border-dashed border-white/[0.12] rounded-xl p-8 sm:p-10 flex flex-col items-center justify-center gap-2 transition-all ${
+                    className={`border border-dashed border-zinc-300 dark:border-zinc-700 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center gap-2 transition-all ${
                       isFormLocked
-                        ? 'opacity-50 cursor-not-allowed bg-white/[0.01]'
-                        : 'hover:border-purple-300/40 bg-white/[0.015] hover:bg-white/[0.03] cursor-pointer group'
+                        ? 'opacity-50 cursor-not-allowed bg-zinc-50 dark:bg-zinc-900/40'
+                        : 'bg-zinc-50/50 hover:bg-violet-50/30 dark:bg-zinc-900/30 dark:hover:bg-violet-950/20 hover:border-violet-300 dark:hover:border-violet-700 cursor-pointer group'
                     }`}
                   >
                     {isReadingImage ? (
-                      <Spinner size="md" color="text-purple-300" label="Processing image..." />
+                      <div className="flex flex-col items-center gap-2">
+                        <Spinner size="sm" color="text-violet-600" />
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">Processing image...</span>
+                      </div>
                     ) : (
                       <>
-                        <i className="fa-solid fa-cloud-arrow-up text-xl text-purple-300 group-hover:scale-110 transition-transform duration-200" />
-                        <span className="text-sm font-medium text-white/90">
-                          Upload Outfit Image
+                        <div className="w-10 h-10 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-600 dark:text-violet-300 flex items-center justify-center text-sm group-hover:scale-105 transition-transform">
+                          <i className="fa-solid fa-cloud-arrow-up" />
+                        </div>
+                        <span className="text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                          Upload Outfit Photo
                         </span>
-                        <span className="text-xs text-[#86868b]">
-                          PNG, JPG, or WEBP
+                        <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                          PNG, JPG, or WEBP up to 10MB
                         </span>
                       </>
                     )}
                   </label>
                 ) : (
-                  <div className="rounded-xl border border-white/[0.1] bg-white/[0.02] p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3.5">
-                      <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-white/[0.15] shadow-md flex-shrink-0">
+                  <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-3 sm:p-4 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 flex-shrink-0 bg-zinc-100 dark:bg-zinc-800">
                         <img
-                          src={image_file}
+                          src={imageFile}
                           alt="Preview"
                           className="w-full h-full object-cover"
                         />
-                        {isReadingImage && (
-                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                            <Spinner size="xs" color="text-white" />
-                          </div>
-                        )}
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-white truncate max-w-[200px] sm:max-w-xs">
-                          {outfit_image?.name || 'Outfit image'}
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-xs sm:text-sm font-medium text-zinc-900 dark:text-white truncate">
+                          {outfitImage?.name || 'Selected outfit image'}
                         </span>
-                        <span className="text-xs text-[#86868b]">
-                          {outfit_image?.size ? `${(outfit_image.size / (1024 * 1024)).toFixed(2)} MB` : 'Image selected'}
+                        <span className="text-[11px] text-emerald-600 dark:text-emerald-400">
+                          {outfitImage?.size ? `${(outfitImage.size / (1024 * 1024)).toFixed(2)} MB • Ready` : 'Ready'}
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
                       <label
                         htmlFor={isFormLocked ? undefined : 'outfit-file-upload'}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium text-white border transition-all ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                           isFormLocked
-                            ? 'opacity-40 cursor-not-allowed bg-white/[0.02] border-white/[0.05]'
-                            : 'bg-white/[0.06] hover:bg-white/[0.12] border-white/[0.1] cursor-pointer'
+                            ? 'opacity-40 cursor-not-allowed bg-transparent border-transparent'
+                            : 'bg-white hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 border-zinc-200 dark:border-zinc-700 cursor-pointer text-zinc-700 dark:text-zinc-300'
                         }`}
                       >
                         Change
@@ -361,7 +385,7 @@ function Home_Page() {
                         type="button"
                         disabled={isFormLocked}
                         onClick={handleClearImage}
-                        className="px-3 py-1.5 rounded-full text-xs font-medium text-red-300 hover:text-red-100 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 cursor-pointer transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="px-3 py-1.5 rounded-full text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-transparent hover:border-rose-200 cursor-pointer transition-colors disabled:opacity-40"
                       >
                         Remove
                       </button>
@@ -369,22 +393,22 @@ function Home_Page() {
                   </div>
                 )}
 
-                {/* Submit Action */}
+                {/* Submit Action with Contrast Violet Highlight */}
                 <div className="flex justify-start pt-1">
                   <button
                     type="submit"
                     disabled={isFormLocked}
-                    className="px-7 py-3 rounded-full font-semibold text-sm sm:text-base text-white bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500 hover:opacity-95 active:scale-98 shadow-md shadow-purple-500/20 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none flex items-center gap-2"
+                    className="w-full sm:w-auto px-6 py-2.5 rounded-full font-medium text-xs sm:text-sm text-white bg-violet-600 hover:bg-violet-700 shadow-sm shadow-violet-500/25 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none flex items-center justify-center gap-2 active:scale-95"
                   >
                     {isCreating ? (
                       <>
-                        <Spinner size="sm" color="text-white" />
-                        <span>Curating Outfit...</span>
+                        <Spinner size="xs" color="currentColor" />
+                        <span>Cataloging Look...</span>
                       </>
                     ) : (
                       <>
                         <i className="fa-solid fa-plus text-xs" />
-                        <span>Create Outfit</span>
+                        <span>Save to Wardrobe</span>
                       </>
                     )}
                   </button>
