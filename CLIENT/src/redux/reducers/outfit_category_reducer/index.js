@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { get_today_dress, is_this_today_dress, is_today_dress_chosen, remove_today_dress, set_today_dress, show__dresses_history, update_today_dress } from "../../actions/outfit_category_actions"
+import { get_today_dress, is_this_today_dress, is_today_dress_chosen, remove_today_dress, set_today_dress, show__dresses_history, update_today_dress } from "../../actions/outfit_category_actions/index.js"
 //deals with history path
 const initialState={
     message:"",

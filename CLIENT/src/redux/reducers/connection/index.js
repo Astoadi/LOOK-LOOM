@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { AcceptRequest, GetFollowing, GetMyIncomingRequests, RejectRequest, addFriend, getFollowers, getFriendorOtherProfile } from "../../actions/connection";
+import { AcceptRequest, GetFollowing, GetMyIncomingRequests, RejectRequest, addFriend, getFollowers, getFriendorOtherProfile } from "../../actions/connection/index.js";
 
 const initialState={
     following:[],

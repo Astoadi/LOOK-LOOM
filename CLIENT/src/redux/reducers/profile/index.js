@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { ChangePublicVisibilityToPrivate, ChangePublicVisibilityToPublic, getProfile } from "../../actions/profile";
+import { ChangePublicVisibilityToPrivate, ChangePublicVisibilityToPublic, getProfile } from "../../actions/profile/index.js";
 
 const initialState={
     user_profile:{},

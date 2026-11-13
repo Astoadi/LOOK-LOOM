@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { delete_plan, get_future_plans, get_history_plans, get_today_plan, make_plan, update_plan_date } from "../../actions/planner";
+import { delete_plan, get_future_plans, get_history_plans, get_today_plan, make_plan, update_plan_date } from "../../actions/planner/index.js";
 const initialState={
     today_plans:[],
     future_plans:[],
